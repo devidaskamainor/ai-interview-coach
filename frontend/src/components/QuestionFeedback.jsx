@@ -1,48 +1,76 @@
+﻿import Icon from './Icon'
 import RubricBars from './RubricBars'
 import ScoreRing from './ScoreRing'
 
-function List({ title, items, tone }) {
+function FeedbackList({ title, items, icon }) {
   if (!items?.length) return null
   return (
-    <div>
-      <h4 className={`mb-1.5 text-sm font-semibold ${tone}`}>{title}</h4>
-      <ul className="list-disc space-y-1 pl-5 text-sm leading-relaxed">
-        {items.map((t, i) => <li key={i}>{t}</li>)}
+    <div className="feedback-list">
+      <h4>
+        <Icon name={icon} size={15} />
+        {title}
+      </h4>
+      <ul>
+        {items.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
       </ul>
     </div>
   )
 }
 
 export default function QuestionFeedback({ q }) {
-  const fb = q.feedback || {}
+  const feedback = q.feedback || {}
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-center gap-6">
-        <ScoreRing score={q.score ?? 0} size={104} />
-        <div className="flex gap-8 text-sm">
+    <div className="question-feedback">
+      <div className="feedback-score">
+        <ScoreRing score={q.score ?? 0} size={95} />
+        <div className="feedback-dimensions">
           <div>
-            <div className="text-muted">Technical</div>
-            <div className="font-display text-2xl font-bold">{Number(q.technical_score).toFixed(1)}<span className="text-sm font-normal text-muted">/10</span></div>
+            <span>Technical</span>
+            <strong>
+              {q.technical_score == null
+                ? '—'
+                : Number(q.technical_score).toFixed(1)}
+              <small>/10</small>
+            </strong>
           </div>
           <div>
-            <div className="text-muted">Communication</div>
-            <div className="font-display text-2xl font-bold">{Number(q.communication_score).toFixed(1)}<span className="text-sm font-normal text-muted">/10</span></div>
+            <span>Communication</span>
+            <strong>
+              {q.communication_score == null
+                ? '—'
+                : Number(q.communication_score).toFixed(1)}
+              <small>/10</small>
+            </strong>
           </div>
         </div>
       </div>
-
       <RubricBars rubric={q.rubric} />
-
-      <div className="grid gap-5 md:grid-cols-3">
-        <List title="What worked" items={fb.strengths} tone="text-good" />
-        <List title="Improve next time" items={fb.improvements} tone="text-warn" />
-        <List title="Points you missed" items={fb.missing_points} tone="text-bad" />
+      <div className="feedback-list-grid">
+        <FeedbackList
+          title="What worked well"
+          items={feedback.strengths}
+          icon="checkCircle"
+        />
+        <FeedbackList
+          title="Make it stronger"
+          items={feedback.improvements}
+          icon="target"
+        />
+        <FeedbackList
+          title="Explore a little further"
+          items={feedback.missing_points}
+          icon="book"
+        />
       </div>
-
       {q.suggested_answer && (
-        <div className="rounded-md border border-signal/20 bg-signal-soft p-4">
-          <h4 className="mb-1.5 text-sm font-semibold text-signal-dark">Suggested answer</h4>
-          <p className="whitespace-pre-line text-sm leading-relaxed">{q.suggested_answer}</p>
+        <div className="suggested-answer">
+          <h4>
+            <Icon name="sparkles" size={17} />A different way to approach it
+          </h4>
+          <span className="suggested-answer-label">SUGGESTED ANSWER</span>
+          <p>{q.suggested_answer}</p>
         </div>
       )}
     </div>

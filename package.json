@@ -1,4 +1,13 @@
 {
+  "private": true,
+  "scripts": {
+    "setup": "npm --prefix frontend ci",
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "preview": "npm --prefix frontend run preview",
+    "setup:classic": "npm --prefix frontend-classic ci",
+    "dev:classic": "npm --prefix frontend-classic run dev -- --port 5173 --strictPort --force"
+  },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.118.0"

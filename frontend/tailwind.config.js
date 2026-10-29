@@ -4,18 +4,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: '#10202E',
-        paper: '#F4F6F8',
-        line: '#D8DEE4',
-        muted: '#5B6B7A',
-        signal: { DEFAULT: '#2447F5', dark: '#1A35BF', soft: '#E7EBFE' },
-        good: '#1B8A5A',
-        warn: '#B7791F',
-        bad: '#B93A32',
+        ink: 'rgb(var(--ink) / <alpha-value>)',
+        paper: 'rgb(var(--paper) / <alpha-value>)',
+        line: 'rgb(var(--line) / <alpha-value>)',
+        muted: 'rgb(var(--muted) / <alpha-value>)',
+        surface: 'rgb(var(--surface) / <alpha-value>)',
+        signal: {
+          DEFAULT: 'rgb(var(--signal) / <alpha-value>)',
+          dark: 'rgb(var(--signal-dark) / <alpha-value>)',
+          soft: 'rgb(var(--signal-soft) / <alpha-value>)',
+        },
+        good: 'rgb(var(--good) / <alpha-value>)',
+        warn: 'rgb(var(--warn) / <alpha-value>)',
+        bad: 'rgb(var(--bad) / <alpha-value>)',
       },
       fontFamily: {
-        display: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
-        sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
+        display: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
     },
   },

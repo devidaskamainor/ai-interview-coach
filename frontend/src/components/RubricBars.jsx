@@ -1,26 +1,28 @@
-import { scoreBg } from '../lib/format'
-
-const LABELS = {
+﻿const LABELS = {
   technical_accuracy: 'Technical accuracy',
   completeness: 'Completeness',
   clarity: 'Clarity',
   structure: 'Structure',
 }
-
 export default function RubricBars({ rubric }) {
   if (!rubric) return null
   return (
-    <dl className="grid gap-3 sm:grid-cols-2">
+    <dl className="rubric-bars">
       {Object.entries(LABELS).map(([key, label]) => {
-        const v = Number(rubric[key] ?? 0)
+        const value = Number(rubric[key] ?? 0)
         return (
           <div key={key}>
-            <div className="mb-1 flex justify-between text-sm">
+            <div className="rubric-label">
               <dt>{label}</dt>
-              <dd className="font-semibold">{v.toFixed(1)}/10</dd>
+              <dd>
+                {value.toFixed(1)}
+                <span>/10</span>
+              </dd>
             </div>
-            <div className="h-2 rounded-full bg-line/70">
-              <div className={`h-2 rounded-full ${scoreBg(v * 10)}`} style={{ width: `${v * 10}%` }} />
+            <div className="track">
+              <span
+                style={{ width: `${Math.max(0, Math.min(100, value * 10))}%` }}
+              />
             </div>
           </div>
         )

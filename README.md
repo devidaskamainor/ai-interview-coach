@@ -3,15 +3,18 @@
 Simulated technical interviews: pick a role and difficulty, answer AI-generated questions,
 get rubric-based scoring, technical and communication feedback, a model answer, and track progress over time.
 
+**Main application:** the premium UI in `frontend/`, available at **http://localhost:5174**. Run `npm run dev` from the project root to start it. The earlier design is preserved in `frontend-classic/` as an optional backup.
+
 **Stack:** React (Vite) + Tailwind CSS · FastAPI · Groq API · Supabase (Postgres + Auth)
 
-**Prerequisites:** Node.js 20 or newer and Python 3.10 or newer.
+**Prerequisites:** Node.js 22 or newer and Python 3.10 or newer.
 
 ## Structure
 ```
-backend/    FastAPI API (LLM calls, scoring, persistence)
-frontend/   React + Tailwind app
-supabase/   schema.sql (tables + RLS)
+backend/           FastAPI API (LLM calls, scoring, persistence)
+frontend/          Main premium React + Tailwind app (port 5174)
+frontend-classic/  Preserved earlier design (optional, port 5173)
+supabase/          schema.sql (tables + RLS)
 ```
 
 ## 1. Supabase
@@ -52,13 +55,18 @@ python -m venv .venv
 ```
 
 ## 3. Frontend
+
+For a fresh clone, create `frontend/.env` using `frontend/.env.example` and fill in the Supabase public URL and publishable key. Keep an existing configured `.env` file. From the project root:
+
 ```bash
-cd frontend
-npm install
-cp .env.example .env                                 # fill in the values
+npm run setup
 npm run dev
 ```
-Open http://localhost:5173, create an account, and start an interview.
+Open **http://localhost:5174**, create an account, and start an interview. `npm run build` builds this same premium frontend. You can also run `npm run dev` directly inside `frontend/`.
+
+The main frontend uses `VITE_API_URL=http://localhost:5174`. Its Vite `/api` proxy forwards requests to the existing backend on port 8000, so no backend or database changes are needed. Keep the backend running in its own terminal.
+
+The earlier design is an optional reference. To run it separately, use `npm run setup:classic` once and `npm run dev:classic`; it opens on port 5173. The default start and build commands always target the premium app.
 
 ## Backend checks
 

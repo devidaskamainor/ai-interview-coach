@@ -1,23 +1,46 @@
-import { scoreColor } from '../lib/format'
-
-export default function ScoreRing({ score = 0, size = 120, label = 'out of 100' }) {
-  const stroke = 10
-  const r = (size - stroke) / 2
-  const c = 2 * Math.PI * r
-  const offset = c * (1 - Math.max(0, Math.min(100, score)) / 100)
+﻿export default function ScoreRing({
+  score = 0,
+  size = 120,
+  label = 'out of 100',
+}) {
+  const stroke = 6
+  const radius = (size - stroke) / 2
+  const circumference = 2 * Math.PI * radius
+  const offset = circumference * (1 - Math.max(0, Math.min(100, score)) / 100)
   return (
-    <div className="relative shrink-0" style={{ width: size, height: size }} role="img" aria-label={`Score ${score} ${label}`}>
-      <svg width={size} height={size} className="-rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#E4E9EE" strokeWidth={stroke} />
+    <div
+      className="score-ring"
+      style={{ width: size, height: size }}
+      role="img"
+      aria-label={`Score ${score} ${label}`}
+    >
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
         <circle
-          cx={size / 2} cy={size / 2} r={r} fill="none" stroke="currentColor" strokeWidth={stroke}
-          strokeLinecap="round" strokeDasharray={c} strokeDashoffset={offset}
-          className={`${scoreColor(score)} transition-[stroke-dashoffset] duration-700`}
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="rgb(var(--line))"
+          strokeWidth={stroke}
+        />
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="rgb(var(--signal))"
+          strokeWidth={stroke}
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          className="score-ring-progress"
         />
       </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className={`font-display text-3xl font-bold ${scoreColor(score)}`}>{Math.round(score)}</span>
-        <span className="text-[11px] text-muted">{label}</span>
+      <div>
+        <strong style={{ fontSize: size > 120 ? 37 : 25 }}>
+          {Math.round(score)}
+        </strong>
+        <span>{label}</span>
       </div>
     </div>
   )
